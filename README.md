@@ -17,11 +17,13 @@ A model of cellular Automata consists of identical cells ordered uniformly over 
 
 ![Alt text](images/Celullar1.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
 
-The type of boundary used in this project is a von Neumann boundary, imitating the restriction of a robot which only moves in four different directions
+The type of neighborhood used in this project is a von Neumann neighborhood, imitating the restriction of a robot which only moves in four different directions
 
 ![Alt text](images/Celullar2.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
 
+And the boundary is of fixed type, where the border cells are obstacles that delimit the searching environment
 
+![Alt text](images/Celullar3.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
 
 
 ## Implementation on Python
