@@ -26,4 +26,9 @@ And the boundary is of fixed type, where the border cells are obstacles that del
 ![Alt text](images/Celullar3.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
 
 
+As the mobile agent does not have any information about the environment and just knows how to detect the goal and obstacles, it can build a map reflecting the topology of the environment to steer the searching towards undiscovered areas.
+
+![Alt text](images/Celullar4.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
+
+
 ## Implementation on Python
