@@ -32,3 +32,5 @@ As the mobile agent does not have any information about the environment and just
 
 
 ## Implementation on Python
+
+The project is supported in the Pycxsimulator project developed by Chun Won, networkx and matplotlib libraries.
