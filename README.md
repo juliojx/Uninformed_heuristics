@@ -112,5 +112,6 @@ def observe():
 	imshow(config,vmin=0,vmax=3,cmap=None, interpolation='none')
 	nx.draw(G,vmin = 0, vmax = 1, cmap = cm.binary,node_shape='o',pos=position,node_size=30 ,node_color = [G.node[i]['state'] for i in G.nodes()],edge_cmap =cm.Reds,edge_color = [G.edges[i,j]['weight'] for i, j in G.edges()]) #We draw the edges with colors, the more red the color, the more weighted is the edge.
 
-
 ```
+
+
