@@ -54,7 +54,7 @@ def initialize():
     OccupiedPositionNoEdgesNodes=[]
     WeightVector=[]
     AccessNodes=[]
-    DinamicWeight=1 #El peso de los enlaces que cambiara conforme avabza la busqueda
+    DinamicWeight=1 #Dynamical Weight Assignment
     NextNode=2
     Stop=0
     goal=np.random.randint(n,size=2)
@@ -66,21 +66,19 @@ def initialize():
     for x in xrange(n):
         for y in xrange(n):
             if x==0 or y==0 or x==n-1 or y==n-1:
-                config[x,y]=1 #Los 1 representan paredes y obstaculos
+                config[x,y]=1 #The 1's represents obstacles
             else:
                 config[x,y]=0 if random()<p else 1
-    config[start[0],start[1]]=2 #Esta es mi posicion inicial, debo construir un nodo por aqui
-    config[xmember,ymember]= 3#Objetivo a encontrar
+    config[start[0],start[1]]=2 #Initial position
+    config[xmember,ymember]= 3#Target
     nextconfig=zeros([n,n])
     G = nx.Graph()
     G.add_node(1,pos=(y1,x1))
     G.node[1]['state'] = 1
     G.node[1]['order']=1
     LastNode=1
-	#for j in G.nodes(): #Recorremos todos los nodos de la red
-	#							if (G.node[j]['pos'][0]==y1 and G.node[j]['pos'][1]==x1):
-	#								LastNode=j
-
+    
+    #In this subroutine we build the network, this block is used in the other functions
     for i in range(-Ra,2):
         for j in range(-Ra,2):
             if (i==0 and j==1) or (i==0 and j==-1) or (i==1 and j==0) or (i==-1 and j==0):
@@ -88,7 +86,7 @@ def initialize():
                     G.add_node(NextNode, pos=(y1+j,x1+i))
                     G.add_edge(LastNode,NextNode)
                     G.edges[NextNode,LastNode]['weight'] = 0
-                    G.node[NextNode]['state'] = 0 #Nodo inaccesible es igual a 0
+                    G.node[NextNode]['state'] = 0 
                     G.node[NextNode]['goal']=0
                     G.node[NextNode]['order']=NextNode
                     CurrentNode=CurrentNode+1
@@ -105,3 +103,14 @@ def initialize():
 ```
 ![Alt text](images/Celullar5.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
 
+The "observe" function is nedeed to show graphically how the algorithm evolve the network built by the agent
+```
+def observe():
+	global G,config, nextconfig,x1,y1, position
+	cla() #Clear axis in each step
+	position=nx.get_node_attributes(G,'pos')
+	imshow(config,vmin=0,vmax=3,cmap=None, interpolation='none')
+	nx.draw(G,vmin = 0, vmax = 1, cmap = cm.binary,node_shape='o',pos=position,node_size=30 ,node_color = [G.node[i]['state'] for i in G.nodes()],edge_cmap =cm.Reds,edge_color = [G.edges[i,j]['weight'] for i, j in G.edges()]) #We draw the edges with colors, the more red the color, the more weighted is the edge.
+
+
+```
