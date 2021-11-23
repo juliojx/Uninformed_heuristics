@@ -78,7 +78,7 @@ def initialize():
     G.node[1]['order']=1
     LastNode=1
     
-    #In this subroutine we build the network, this block is used in the other functions
+    #In this subroutine we build the network node by node, this block is used in the other functions. A call of this function will  take the elements in the neighborhood (four elements) to detect obstacles, the border and free spaces, this information will be store in the graph in construction. 
     for i in range(-Ra,2):
         for j in range(-Ra,2):
             if (i==0 and j==1) or (i==0 and j==-1) or (i==1 and j==0) or (i==-1 and j==0):
