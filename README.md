@@ -33,4 +33,75 @@ As the mobile agent does not have any information about the environment and just
 
 ## Implementation on Python
 
-The project is supported in the Pycxsimulator project developed by Chun Won, networkx and matplotlib libraries.
+The project is supported in the Pycxsimulator project, networkx and matplotlib libraries. 
+
+To do the iteration over time we define three functions called "initialize", "observe" and "update"; so, at the end we only need to import pycxsimulator and run the realtime simulation GUI developed by Chun Won with this three functions as inputs.
+
+We first initialize the system, with a random environment, initial cell and goal cells included.
+```
+def initialize():
+    global G,config,WeightVector,AccessNodes, nextconfig,x1,y1, position, CurrentNode,NextNode, DinamicWeight,LastNode,Stop, NextRandomNode, Vecinos, PositionCheck,OccupiedPosition, OccupiedPositionNoEdges,OccupiedPositionNoEdgesNodes
+    global Path
+    config=zeros([n,n])
+    CurrentNode=1
+    LastNode=1
+    Path=[]
+    NextRandomNode=[]
+    PositionCheck=[]
+    OccupiedPosition=[]
+    BloqueoSegundo=0
+    OccupiedPositionNoEdges=[]
+    OccupiedPositionNoEdgesNodes=[]
+    WeightVector=[]
+    AccessNodes=[]
+    DinamicWeight=1 #El peso de los enlaces que cambiara conforme avabza la busqueda
+    NextNode=2
+    Stop=0
+    goal=np.random.randint(n,size=2)
+    xmember=goal[0]
+    ymember=goal[1]
+    start=np.random.randint(n,size=2)
+    x1=start[0]
+    y1=start[1]
+    for x in xrange(n):
+        for y in xrange(n):
+            if x==0 or y==0 or x==n-1 or y==n-1:
+                config[x,y]=1 #Los 1 representan paredes y obstaculos
+            else:
+                config[x,y]=0 if random()<p else 1
+    config[start[0],start[1]]=2 #Esta es mi posicion inicial, debo construir un nodo por aqui
+    config[xmember,ymember]= 3#Objetivo a encontrar
+    nextconfig=zeros([n,n])
+    G = nx.Graph()
+    G.add_node(1,pos=(y1,x1))
+    G.node[1]['state'] = 1
+    G.node[1]['order']=1
+    LastNode=1
+	#for j in G.nodes(): #Recorremos todos los nodos de la red
+	#							if (G.node[j]['pos'][0]==y1 and G.node[j]['pos'][1]==x1):
+	#								LastNode=j
+
+    for i in range(-Ra,2):
+        for j in range(-Ra,2):
+            if (i==0 and j==1) or (i==0 and j==-1) or (i==1 and j==0) or (i==-1 and j==0):
+                if config[x1+i,y1+j]==1:
+                    G.add_node(NextNode, pos=(y1+j,x1+i))
+                    G.add_edge(LastNode,NextNode)
+                    G.edges[NextNode,LastNode]['weight'] = 0
+                    G.node[NextNode]['state'] = 0 #Nodo inaccesible es igual a 0
+                    G.node[NextNode]['goal']=0
+                    G.node[NextNode]['order']=NextNode
+                    CurrentNode=CurrentNode+1
+                    NextNode=NextNode+1
+                if config[x1+i,y1+j]==0:
+                    G.add_node(NextNode, pos=(y1+j,x1+i))
+                    G.add_edge(LastNode,NextNode)
+                    G.edges[NextNode,LastNode]['weight'] = 1#Era 1
+                    G.node[NextNode]['state'] = 1 #Nodo accesible es igual a 1
+                    G.node[NextNode]['goal']=0
+                    G.node[NextNode]['order']=NextNode
+                    CurrentNode=CurrentNode+1
+                    NextNode=NextNode+1
+```
+![Alt text](images/Celullar5.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
+
