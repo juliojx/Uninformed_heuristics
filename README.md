@@ -254,7 +254,7 @@ Finally, we need to iterate the algorithm until convergence. For that, we use th
 import pycxsimulator
 pycxsimulator.GUI().start(func=[initialize,observe,update])
 ```
-In the next figure we can see a intermediate step of our algorithm
+In the next figure we can see a intermediate step of our algorithm, observe the different tones of color as a way to illustrate the dynamical cost assignment
 
 ![Alt text](images/Celullar6.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
 
