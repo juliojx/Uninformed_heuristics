@@ -254,4 +254,12 @@ Finally, we need to iterate the algorithm until convergence. For that, we use th
 import pycxsimulator
 pycxsimulator.GUI().start(func=[initialize,observe,update])
 ```
-In the 
+In the next figure we can see a intermediate step of our algorithm
+
+![Alt text](images/Celullar6.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
+
+And a figure to observe a full run of the algorithm
+
+
+![Alt text](images/Celullar7.png?raw=true "Circuit of the prototype, includes power, control and sensor stages")
+
