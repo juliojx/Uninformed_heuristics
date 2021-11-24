@@ -140,17 +140,16 @@ def update():
             j=j+1
         #print(AccessNodes)
 
-        RandomIndex=np.random.randint(0,len(AccessNodes))#We choose the node randomly
+        RandomIndex=np.random.randint(0,len(AccessNodes))#We choose the next node randomly (between the reachable nodes)
         NextRandomNode=AccessNodes[RandomIndex]
-        #print(NextRandomNode)
         print("Incrementamos en 1 el enlace entre", NextRandomNode[1],"y", LastNode)
         G.edges[NextRandomNode[1],LastNode]['weight']=G.edges[NextRandomNode[1],LastNode]['weight']+1
-        #LastNode=NextRandomNode[1]
         print("La nueva posicion es",G.node[LastNode]['pos'])
         x1=G.node[NextRandomNode[1]]['pos'][1]
         y1=G.node[NextRandomNode[1]]['pos'][0]
 
-        for i in range(-Ra,2):
+        
+	for i in range(-Ra,2):
             for j in range(-Ra,2):
                 if ((i==0 and j==1) or (i==0 and j==-1) or (i==1 and j==0) or (i==-1 and j==0)):
                     PositionCheck.append(tuple([y1+j,x1+i]))
@@ -158,21 +157,21 @@ def update():
         #print(position)
         #print(PositionCheck)
 
-        #Aqui ponemos los enlaces faltantes a nodos contiguos
-        #Discriminamos todos los nodos que tengan la posicion de nodos vecinos
+        #We set the missing nodes for the new free positions
         for k in G.nodes():
             if position[k] in PositionCheck:
                 #print("El nodo",k,"esta ocupando una nueva posicion")
                 OccupiedPosition.append(tuple([position[k][0],position[k][1]]))
-        #print("Los nodos que ocupan una posicion nueva son", OccupiedPosition)
+        
 
 
-        #Aqui ponemos los enlaces faltantes a nodos contiguo
+        #We set the edges for the new nodes and current nodes
 
         for k in OccupiedPosition:
             if k!=G.node[LastNode]["pos"]:
                 OccupiedPositionNoEdges.append(k)
-        print("Estos son las posiciones sobre los que debemos verificar los enlaces",OccupiedPositionNoEdges)
+        print("Positions with edges to verify",OccupiedPositionNoEdges)
+	
         for k in OccupiedPositionNoEdges:
             print(config[k[1],k[0]])
             for j in G.nodes(): #Recorremos todos los nodos de la red
@@ -186,11 +185,8 @@ def update():
                 print("No hay enlaces entre",l, "y",NextRandomNode[1])
                 G.add_edge(NextRandomNode[1],l)
                 G.edges[NextRandomNode[1],l]['weight'] = 2
-
-
-
-
-        #En este paso rellenamos los nodos faltantes que va encontrando el explorador
+	
+	#In this last step we check the nodes, the agent will detect obstacles, unreachable positions and target cells.
         for i in OccupiedPosition:
             PositionCheck.remove(i)
         #print("Los nodos disponibles para nodos nuevos son", PositionCheck)
@@ -223,7 +219,9 @@ def update():
                 G.node[NextNode]['goal']=1
                 CurrentNode=CurrentNode+1
                 NextNode=NextNode+1
-
+		
+		
+		#As a extra step we can run a efficient informed pathfinding algorithm to draw a optimal path from the initial state to the target
                 OptimizedPath=nx.shortest_path(G,source=1,target=NextRandomNode[1])
 
                 for k in range(0,len(OptimizedPath)-1):
@@ -237,7 +235,7 @@ def update():
 
                 #print(OptimizedPath)
 
-        #Reseteamos todos los vectores
+        #We reset all our vectors and auxiliar variables to iterate again
         #print(G.edges(data='weight'))
         LastNode=NextRandomNode[1]
         del WeightVector[:]
@@ -250,3 +248,10 @@ def update():
         del OccupiedPositionNoEdgesNodes[:]
 ```
 
+Finally, we need to iterate the algorithm until convergence. For that, we use the GUI for pycxsimulator:
+
+```
+import pycxsimulator
+pycxsimulator.GUI().start(func=[initialize,observe,update])
+```
+In the 
